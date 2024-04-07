@@ -36,11 +36,11 @@ math: true
 assets:
   # disableHLJS: true # to disable highlight.js
   # disableFingerprinting: true
-  favicon: "/img/qi.ico"
-  favicon16x16: "/img/qi.ico"
-  favicon32x32: "/img/qi.ico"
-  apple_touch_icon: "/img/qi.ico"
-  safari_pinned_tab: "/img/qi.ico"
+  favicon: "/img/favicon.ico"
+  favicon16x16: "/img/favicon.ico"
+  favicon32x32: "/img/favicon.ico"
+  apple_touch_icon: "/img/favicon.ico"
+  safari_pinned_tab: "/img/favicon.ico"
 
 label:
   text: "QiBlog"
@@ -70,9 +70,9 @@ cover:
   hiddenInSingle: true # hide on single page
 
 editPost:
-  URL: "https://github.com/agirlc.github.io/content"
+  URL: "https://github.com/agirlc/agirlc.github.io/issues"
   Text: "Suggest Changes" # edit text
-  appendFilePath: true # to append file path to Edit link
+  appendFilePath: false # to append file path to Edit link
 
 # for search
 # https://fusejs.io/api/options.html
