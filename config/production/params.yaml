@@ -1,0 +1,7 @@
+analytics:
+  google:
+    SiteVerificationTag: "XYZabc"
+  bing:
+    SiteVerificationTag: "XYZabc"
+  yandex:
+    SiteVerificationTag: "XYZabc"

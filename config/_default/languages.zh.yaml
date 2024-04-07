@@ -1,0 +1,50 @@
+languageName: "中文🇨🇳"
+contentDir: content/zh
+languageCode: zh-CN
+weight: 2
+params:
+  # homeInfoParams:
+  #   Title: "\U0001F44B 欢迎来到Qí的博客"
+  #   Content: Hi, this is Qí, a student . 
+  profileMode:
+    enabled: true
+    title: "\U0001F44B 欢迎光临Qi的博客"
+    subtitle:  "🌟成为一个有趣的人🌟"
+    imageUrl: "/img/logo-512.gif"
+    imageTitle: Selfie
+    imageWidth: 150
+    imageHeight: 150
+    buttons:
+      - name: 🌈关于
+        url: about
+      - name: 📚文章
+        url: posts
+      - name: 🙋🏻‍♂️简历
+        url: about/resume.pdf
+
+menu:
+  main:
+    # - identifier: About
+    #   name: 🌈关于
+    #   url: about
+    #   weight: 1
+    - identifier: Blog
+      name: 📚文章
+      url: posts
+      weight: 2
+    - identifier: Archives
+      name: ⏱️时间轴
+      url: archives
+      weight: 3
+    - identifier: Tags
+      name: 🔖标签
+      url: tags
+      weight: 4
+    - identifier: Categories
+      name: 🧩类目
+      url: categories
+      weight: 5
+    - identifier: Search
+      name: 🔍搜索
+      url: search
+      weight: 6

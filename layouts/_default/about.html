@@ -1,0 +1,33 @@
+{{- define "main" }}
+
+<header class="page-header">
+    <h1>{{ .Title }}</h1>
+    {{- if .Description }}
+    <div class="post-description">
+        {{ .Description }}
+    </div>
+    {{- end }}
+    {{- if not (.Param "hideMeta") }}
+    <div class="post-meta">
+        {{- partial "translation_list.html" . -}}
+    </div>
+    {{- end}}
+</header>
+
+<div class="post-content">
+    {{- partial "anchored_headings.html" .Content -}}
+</div>
+
+
+<!-- <link rel="stylesheet" href="https://cdn.towardsagi.fun/npm/aplayer/APlayer.min.css">
+<script src="https://cdn.towardsagi.fun/npm/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.towardsagi.fun/npm/meting/Meting.min.js"></script>
+<meting-js
+	server="netease"
+	type="playlist"
+	id="25507196">
+</meting-js> -->
+{{- if (.Param "comments") }}
+{{- partial "comments.html" . }}
+{{- end }}
+{{- end }}{{/* end main */}}
