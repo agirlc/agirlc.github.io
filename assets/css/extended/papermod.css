@@ -8,10 +8,11 @@
     padding: var(--gap);
     line-height: 25.6px;
     font-size: 15px;
+    font-family:  Verdana, Helvetica Neue, "LXGW WenKai Screen", Arial, sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: "LXGW WenKai Screen", PingFang SC, Verdana, Helvetica Neue, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans-serif;
+    font-family: Verdana, Helvetica Neue, "LXGW WenKai Screen", PingFang SC,  Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans-serif;
     font-weight: 100;
     line-height: 1.35;
 }
