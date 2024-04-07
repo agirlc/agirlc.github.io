@@ -6,6 +6,7 @@ author = ["Lao Qi"]
 categories = ["AIGC"]
 tags = ["diffusion"] 
 description = "理解DDPM论文"
+math = true
 
 draft = false
 comments = false
