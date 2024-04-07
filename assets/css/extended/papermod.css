@@ -119,3 +119,10 @@ pre > code {
 .toc li a:hover {
     color: var(--secondary);
 }
+
+code.has-jax {
+    -webkit-font-smoothing: antialiased;
+    background: inherit !important;
+    border: none !important;
+    font-size: 100%;
+}

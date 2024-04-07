@@ -24,6 +24,20 @@ permalinks:
 defaultContentLanguage: en # prefer language
 defaultContentLanguageInSubdir: true
 
+markup:
+  goldmark:
+    extensions:
+      passthrough:
+        delimiters:
+          block:
+          - - \[
+            - \]
+          - - $$
+            - $$
+          inline:
+          - - \(
+            - \)
+        enable: true
 
 # menu:
 #   main:

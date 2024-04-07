@@ -6,7 +6,7 @@ author = ["Lao Qi"]
 categories = ["AIGC"]
 tags = ["diffusion"] 
 description = "理解DDPM论文"
-math = true
+mathjax = true
 
 draft = false
 comments = false
@@ -28,7 +28,7 @@ UseHugoToc = true
 下面考虑增加高斯噪声的实现。给定任意输入$X$，给其增加一个$\epsilon$ ~ $\mathcal{N}(0,1)$的标准正太分布，我们希望有一个“力度”参数$\lambda$，当$\lambda \rightarrow 0$的时候，X基本没有变化，当$\lambda \rightarrow 1$的时候，X完全变为$\epsilon$。因此，加高斯噪声的函数应该是这样的一个形式：
 
 $$
-   f_ {add\_noise}(X, \epsilon) = (1 - \lambda) \cdot X + \lambda \cdot \epsilon. \tag{1}
+   f_ {addnoise}(X, \epsilon) = (1 - \lambda) \cdot X + \lambda \cdot \epsilon. \tag{1}
 $$
 
 其中等式右边第一项使得输入变“淡”，而第二项使得输出变“花”，而使用$\lambda$来控制其中的力度。
@@ -39,7 +39,7 @@ $$
 
 noise = torch.randn_like(X)                # 生成随机正太分布噪音
 
-X_with_noise = f_{add_noise}(X, noise)     # 加噪
+X_with_noise = f_{addnoise}(X, noise)     # 加噪
 
 pred_noise = model(X_with_noise)           # 预测噪声（使用时减掉噪声就是去噪了）
 
@@ -80,10 +80,10 @@ def diffuse_step(X_in, beta):
 这和我们前面的加噪音函数非常相似，只是它多了根号。而通过选择这种扩散方式，可以得到直接从$X_0$计算得到$X_t$的公式：
 
 $$
-q(X_t|X_{0}) = \mathcal{N}(X_t, \sqrt{\bar{\alpha}_t}X_{t-1}, (1 - \bar{\alpha}_t)\mathbf{I}). \tag{4}
+q(X_t|X_{0}) = \mathcal{N}(X_t, \sqrt{\bar{\alpha} _t}X _{t-1}, (1 - \bar{\alpha} _t)\mathbf{I}). \tag{4}
 $$
 
-其中$\alpha_t = 1 - \beta_t$，$\bar{\alpha}_t = \prod_{s=1}^t\alpha_s$。具体的证明挺过程挺复杂的，见背景知识中的公式推导1。
+其中$\alpha_t = 1 - \beta_t$，$\bar{\alpha} _t = \prod _{s=1}^t\alpha_s$。具体的证明挺过程挺复杂的，见背景知识中的公式推导1。
 
 直接计算公式使得我们可以不必从输入$X_0$开始串行计算到$X_T$，然后再进行去噪训练。直接一步就计算到任意的一个中间过程$X_t$，进行训练，大大加快了训练的过程。并且，所有的$\sqrt{\bar{\alpha}_t}$ 与 $\sqrt{1 - \bar{\alpha}_t}$ 都可以预先计算好，进一步加快训练过程。 观察其代码实现，可以描述为：
 
@@ -122,23 +122,31 @@ for batch_X in data:
 $$
 p_\theta(X_{0:T}) = p(X_T)\prod_{t=1}^Tp_\theta(X_{t-1}|X_t). \tag{5}
 $$
+
 其中，$p(X_T)$表示采样得到高斯噪声$X_T$的概率，没有可训练参数。作者提到，当我们假设逆扩散过程$q(X_{t-1}|X_t)$是一个正太分布时，即：
+
 $$
-q(X_{t-1}|X_t) = q(X_{t-1}|X_t, X_0) = \mathcal{N}(X_{t-1}; \mu_\theta(X_t, X_0,t), \Sigma_\theta(X_t, X_0, t)). \tag{6}
+\begin{aligned}
+q(X_{t-1}|X_t) &= q(X_{t-1}|X_t, X_0) \\\\
+&= \mathcal{N}(X_{t-1}; \mu_\theta(X_t, X_0,t), \Sigma_\theta(X_t, X_0, t)).
+\end{aligned}  \tag{6}
 $$
+
 通过联立直接计算公式(4)，可以**近似**得到如下的逆扩散过程的均值和方差的表示公式，详细推导过程见背景知识部分的公式推导2：
+
 $$
-\left\{
     \begin{aligned}
-    & \mu_\theta(X_t, X_0,t) = \frac{\sqrt{\alpha_t}(1 - \bar{\alpha}_{t-1})}{1 - \bar{\alpha}_{t}}X_t  + \frac{\sqrt{\bar{\alpha}_{t-1}}\beta_t}{1 - \bar{\alpha_t}}X_0\\
-    & \Sigma_\theta(X_t, X_0, t) = \frac{1 - \bar{\alpha}_{t-1}}{1 - \bar{\alpha}_{t}} \cdot \beta_t
-    \end{aligned}
-\right. \tag{7}
+    & \mu_\theta(X_t, X_0,t) = \frac{\sqrt{\alpha _t}(1 - \bar{\alpha} _{t-1})}{1 - \bar{\alpha} _{t}}X_t  + \frac{\sqrt{\bar{\alpha} _{t-1}}\beta_t}{1 - \bar{\alpha_t}}X_0, \\\\
+    & \Sigma _\theta(X_t, X_0, t) = \frac{1 - \bar{\alpha} _{t-1}}{1 - \bar{\alpha} _{t}} \cdot \beta_t.
+    \end{aligned} \tag{7}
 $$
+
 可以看到，逆扩散过程的方差是一个**常量**，并且其均值仅与$X_t$和$X_0$有关系,。因此，更进一步的，应用公式（4）中$X_t$与$X_0$的直接计算关系，可以得到均值的表达式：
+
 $$
 \mu_\theta(X_t, X_0,t) = \frac{1}{\sqrt{\alpha_t}}(X_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}}z_t) \tag{8}
 $$
+
 其中，z_t是前向过程中生成的噪音，也可以是反向过程中模型预测的噪音。由此，推理的过程就是公式(7) 和 公式 (8)的实现：
 ```python
 
