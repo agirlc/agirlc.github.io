@@ -1,0 +1,26 @@
+{{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+{{- if and (gt (len $pages) 1) (in $pages . ) }}
+<nav class="paginav">
+  {{- with $pages.Next . }}
+  <a class="prev" href="{{ .Permalink }}">
+    <span class="title">« {{ i18n "prev_page" }}</span>
+    <br>
+    <span>{{- .Name -}}</span>
+  </a>
+  {{- end }}
+  {{- with $pages.Prev . }}
+  <a class="next" href="{{ .Permalink }}">
+    <span class="title">{{ i18n "next_page" }} »</span>
+    <br>
+    <span>{{- .Name -}}</span>
+  </a>
+  {{- end }}
+</nav>
+{{- end }}
+
+<p style="color:dimgrey">
+  {{ i18n "copy_right_1" }}
+<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+  CC BY-NC-ND 4.0 DEED
+</a> {{ i18n "copy_right_2" }}<a href="{{ .Permalink}}">{{ .Site.Title }}</a>
+</p>
